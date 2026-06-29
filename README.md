@@ -148,6 +148,41 @@ The application will start at `http://localhost:5000`
 - Large PDFs may take longer to process
 - Exported files are stored in the `outputs/` directory and cleaned up periodically
 
+
+## How to Use in VS Code
+    1. Open the Project
+        Open VS Code → File > Open Folder...
+        Select pdf-analyzer
+
+    2. Install Dependencies
+        Open a terminal in VS Code and run:
+           python -m venv venv
+              venv\Scripts\activate       # Windows
+            # source venv/bin/activate  # Mac/Linux
+              pip install -r requirements.txt
+
+    3. Run the App
+        python app.py
+          Open http://localhost:5000 in your browser. ex:
+             * Running on http://127.0.0.1:5000
+             * Running on http://192.168.1.34:5000
+
+    4: Open in Browser
+            Click the link in the terminal (Ctrl+Click)
+            Or open your browser and go to http://127.0.0.1:5000
+
+## Quick Test Guide
+        1. Upload a PDF file (drag & drop or click browse)
+        2. Select extraction type (e.g., "All Data")
+        3. Type a prompt like:
+          -- "Summarize this document and extract all tables"
+          -- "Find all email addresses and phone numbers"
+          -- "Extract financial data and calculate totals"
+        4. Click "Analyze & Extract"
+        5. Choose export format (PDF, DOCX, Excel, PPT, PNG)
+        6. Download your generated file
+
+
 ## License
 
 This project is open source and free to use.

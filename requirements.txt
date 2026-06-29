@@ -1,0 +1,46 @@
+# Core dependencies (required)
+flask==3.0.3
+flask-cors==4.0.0
+werkzeug==3.0.3
+pdfplumber==0.11.0
+PyPDF2==3.0.1
+
+# PDF processing
+pymupdf==1.24.5
+
+# Data processing
+pandas==2.2.2
+
+# Export generators
+openpyxl==3.1.5
+python-docx==1.1.2
+reportlab==4.2.2
+Pillow==10.4.0
+
+# Optional: for enhanced table extraction (requires ghostscript installed on system)
+# camelot-py==0.11.0
+
+# Optional: for PDF to image conversion (requires poppler installed on system)
+# pdf2image==1.17.0
+
+# Optional: for presentations
+python-pptx==1.0.2
+
+# Optional: utilities
+regex==2024.5.15
+requests==2.32.3
+
+# Installation notes:
+# 1. Create a virtual environment: python -m venv venv
+# 2. Activate it: venv\Scripts\activate (Windows) or source venv/bin/activate (Mac/Linux)
+# 3. Install core: pip install -r requirements.txt
+#
+# For camelot-py (advanced table extraction), also install:
+#   - Windows: https://ghostscript.com/releases/gsdnld.html
+#   - Mac: brew install ghostscript
+#   - Linux: sudo apt-get install ghostscript
+#
+# For pdf2image, also install:
+#   - Windows: https://github.com/oschwartz10612/poppler-windows/releases
+#   - Mac: brew install poppler
+#   - Linux: sudo apt-get install poppler-utils

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Analyzer - Smart PDF Extraction & Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fas fa-file-pdf"></i>
+                <h1>PDF Analyzer</h1>
+            </div>
+            <p class="tagline">Smart PDF Extraction, Analysis & Export</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Step 1: Upload Section -->
+            <section class="step-section" id="upload-section">
+                <div class="step-header">
+                    <span class="step-number">1</span>
+                    <h2>Upload Your PDF</h2>
+                </div>
+                
+                <div class="upload-zone" id="upload-zone">
+                    <input type="file" id="file-input" accept=".pdf" hidden>
+                    <div class="upload-content" id="upload-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p class="upload-text">Drag & drop your PDF here or <span class="browse-link">browse</span></p>
+                        <p class="upload-hint">Supports PDF files up to 50MB</p>
+                    </div>
+                    <div class="upload-progress" id="upload-progress" hidden>
+                        <div class="spinner"></div>
+                        <p>Uploading...</p>
+                    </div>
+                </div>
+                
+                <div class="file-info" id="file-info" hidden>
+                    <div class="file-card">
+                        <i class="fas fa-file-pdf file-icon"></i>
+                        <div class="file-details">
+                            <p class="file-name" id="file-name"></p>
+                            <p class="file-meta" id="file-meta"></p>
+                        </div>
+                        <button class="btn-icon" id="remove-file" title="Remove file">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Analysis Type Selection -->
+            <section class="step-section" id="type-section" hidden>
+                <div class="step-header">
+                    <span class="step-number">2</span>
+                    <h2>What to Extract?</h2>
+                </div>
+                
+                <div class="extraction-types">
+                    <div class="type-card active" data-type="all">
+                        <i class="fas fa-layer-group"></i>
+                        <span>All Data</span>
+                        <small>Extract everything</small>
+                    </div>
+                    <div class="type-card" data-type="text">
+                        <i class="fas fa-font"></i>
+                        <span>Text</span>
+                        <small>All text content</small>
+                    </div>
+                    <div class="type-card" data-type="tables">
+                        <i class="fas fa-table"></i>
+                        <span>Tables</span>
+                        <small>Data tables only</small>
+                    </div>
+                    <div class="type-card" data-type="numbers">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Numbers</span>
+                        <small>Statistics & data</small>
+                    </div>
+                    <div class="type-card" data-type="code">
+                        <i class="fas fa-code"></i>
+                        <span>Code</span>
+                        <small>Code snippets</small>
+                    </div>
+                    <div class="type-card" data-type="headers">
+                        <i class="fas fa-heading"></i>
+                        <span>Structure</span>
+                        <small>Headers & outline</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Prompt Input -->
+            <section class="step-section" id="prompt-section" hidden>
+                <div class="step-header">
+                    <span class="step-number">3</span>
+                    <h2>What do you want?</h2>
+                </div>
+                
+                <div class="prompt-container">
+                    <div class="prompt-suggestions">
+                        <span class="suggestion-label">Quick prompts:</span>
+                        <button class="suggestion-chip" data-prompt="Summarize this document">Summarize</button>
+                        <button class="suggestion-chip" data-prompt="Extract all emails and phone numbers">Extract Contacts</button>
+                        <button class="suggestion-chip" data-prompt="Find all dates and deadlines">Find Dates</button>
+                        <button class="suggestion-chip" data-prompt="Extract all tables with headers">Extract Tables</button>
+                        <button class="suggestion-chip" data-prompt="Calculate statistics and totals">Calculate Stats</button>
+                        <button class="suggestion-chip" data-prompt="Organize the document by sections">Organize</button>
+                    </div>
+                    
+                    <textarea 
+                        id="prompt-input" 
+                        class="prompt-textarea" 
+                        placeholder="Enter your request here... e.g., 'Summarize the key points and extract all financial data from the tables'"
+                        rows="4"
+                    ></textarea>
+                    
+                    <div class="prompt-actions">
+                        <button class="btn btn-primary" id="analyze-btn" disabled>
+                            <i class="fas fa-magic"></i>
+                            Analyze & Extract
+                        </button>
+                        <button class="btn btn-secondary" id="extract-btn" hidden>
+                            <i class="fas fa-bolt"></i>
+                            Quick Extract
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 4: Results & Export -->
+            <section class="step-section" id="results-section" hidden>
+                <div class="step-header">
+                    <span class="step-number">4</span>
+                    <h2>Results & Export</h2>
+                </div>
+                
+                <div class="results-loading" id="results-loading" hidden>
+                    <div class="spinner-large"></div>
+                    <p class="loading-text">Analyzing your PDF...</p>
+                    <p class="loading-subtext" id="loading-status">Extracting text...</p>
+                </div>
+                
+                <div class="results-content" id="results-content">
+                    <div class="results-tabs">
+                        <button class="tab-btn active" data-tab="analysis">
+                            <i class="fas fa-chart-line"></i> Analysis
+                        </button>
+                        <button class="tab-btn" data-tab="extracted">
+                            <i class="fas fa-database"></i> Extracted Data
+                        </button>
+                        <button class="tab-btn" data-tab="preview">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                    </div>
+                    
+                    <div class="tab-content" id="tab-analysis">
+                        <div class="analysis-result" id="analysis-result"></div>
+                    </div>
+                    
+                    <div class="tab-content hidden" id="tab-extracted">
+                        <div class="extracted-data" id="extracted-data"></div>
+                    </div>
+                    
+                    <div class="tab-content hidden" id="tab-preview">
+                        <div class="preview-area" id="preview-area"></div>
+                    </div>
+                    
+                    <!-- Export Section -->
+                    <div class="export-section" id="export-section">
+                        <h3><i class="fas fa-download"></i> Export Results</h3>
+                        <div class="export-formats">
+                            <button class="format-btn" data-format="pdf">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>PDF</span>
+                            </button>
+                            <button class="format-btn" data-format="docx">
+                                <i class="fas fa-file-word"></i>
+                                <span>DOCX</span>
+                            </button>
+                            <button class="format-btn" data-format="xlsx">
+                                <i class="fas fa-file-excel"></i>
+                                <span>Excel</span>
+                            </button>
+                            <button class="format-btn" data-format="pptx">
+                                <i class="fas fa-file-powerpoint"></i>
+                                <span>PPT</span>
+                            </button>
+                            <button class="format-btn" data-format="png">
+                                <i class="fas fa-file-image"></i>
+                                <span>PNG</span>
+                            </button>
+                        </div>
+                        <div class="export-progress" id="export-progress" hidden>
+                            <div class="spinner"></div>
+                            <p>Generating output file...</p>
+                        </div>
+                        <div class="export-result" id="export-result" hidden>
+                            <div class="export-success">
+                                <i class="fas fa-check-circle"></i>
+                                <p>File generated successfully!</p>
+                            </div>
+                            <div class="export-actions">
+                                <a href="#" class="btn btn-primary" id="download-btn" target="_blank">
+                                    <i class="fas fa-download"></i>
+                                    Download File
+                                </a>
+                                <button class="btn btn-secondary" id="preview-btn">
+                                    <i class="fas fa-eye"></i>
+                                    Preview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>PDF Analyzer - Extract, Analyze, and Export with ease</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
